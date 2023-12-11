@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:performance_test/TestScreen.dart';
 
 import 'DeviceInfo.dart';
 
@@ -18,13 +19,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Performance Test'),
+      home: MyHomePage(title: 'Performance Test'),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -39,19 +40,49 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DeviceInfo()),
-                );
-              },
-              child: const Text('Get Device Info'),
-            )
+            Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  style: mainButtonStyle,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DeviceInfo()),
+                    );
+                  },
+                  child: const Text('Get Device Info'),
+                )),
+            Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  style: mainButtonStyle,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TestScreen()),
+                    );
+                  },
+                  child: const Text('Start test'),
+                ))
           ],
         ),
       ),
     );
   }
+
+  ButtonStyle mainButtonStyle = ButtonStyle(
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.0),
+    )),
+    padding: MaterialStateProperty.all(
+        const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0)),
+    backgroundColor: MaterialStateProperty.all(Colors.blue),
+    foregroundColor: MaterialStateProperty.all(Colors.white),
+    textStyle: MaterialStateProperty.all(const TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w600,
+    )),
+  );
 }

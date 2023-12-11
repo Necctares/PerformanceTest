@@ -2,6 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:performance_test/main.dart';
 import 'package:system_info2/system_info2.dart';
 
 class DeviceInfo extends StatefulWidget {
@@ -211,7 +212,19 @@ class _DeviceInfoState extends State<DeviceInfo> {
           elevation: 4,
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextButton(
+                onPressed: (){
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MyApp()));
+                  });
+                },
+                style: ButtonStyle(
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
+                ),
+                child: const Text('Back to main menu')),
             Expanded(child: _getDeviceInfoView()),
             Expanded(child: _getDeviceHwSpec())
           ],
@@ -293,7 +306,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  '${SysInfo.getTotalPhysicalMemory() ~/ (1024*1024)} MB',
+                  '${SysInfo.getTotalPhysicalMemory() ~/ (1024 * 1024)} MB',
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -316,7 +329,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  '${SysInfo.getTotalVirtualMemory() ~/ (1024*1024)} MB',
+                  '${SysInfo.getTotalVirtualMemory() ~/ (1024 * 1024)} MB',
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
