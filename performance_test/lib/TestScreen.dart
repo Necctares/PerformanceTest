@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:performance_test/FileWriter.dart';
+import 'package:performance_test/SquaresTest.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -21,7 +22,7 @@ class _TestScreenState extends State<TestScreen> {
     testExecuting = true;
     savedFileDir = '';
     testPhase = 'Initializing...';
-    WidgetsBinding.instance.addPostFrameCallback((_) => _startTests(context));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _sortingTest(context));
   }
 
   @override
@@ -44,27 +45,15 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   List<Widget> _mainTestWidget() {
-    if (testExecuting) {
       return <Widget>[
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Text('Test stage: $testPhase')])
+            children: <Widget>[Text('Test stage: $testPhase'),
+              Text('File will be saved at: $savedFileDir')])
       ];
-    } else {
-      return <Widget>[
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          const Text('Test Finished!'),
-          Text('File saved at: $savedFileDir')
-        ])
-      ];
-    }
   }
 
-  _startTests(BuildContext context) {
-    _sortingTest();
-  }
-
-  _sortingTest() {
+  _sortingTest(BuildContext context) {
     FileWriter fw = FileWriter();
     fw.getFilePath('TestResult.txt').then((value) => {savedFileDir = value});
 
@@ -73,12 +62,55 @@ class _TestScreenState extends State<TestScreen> {
     var vetor1000 = List.generate(1000, (_) => Random().nextInt(1000));
     var vetor10000 = List.generate(10000, (_) => Random().nextInt(1000));
     var vetor100000 = List.generate(100000, (_) => Random().nextInt(1000));
+    var vetor1000000 = List.generate(1000000, (_) => Random().nextInt(1000));
+
+    var timings = [];
     Stopwatch sw = Stopwatch();
     sw.start();
     vetor10.sort();
     sw.stop();
+    timings.add(sw.elapsedMicroseconds);
+    sw.reset();
+    sw.start();
+    vetor100.sort();
+    sw.stop();
+    timings.add(sw.elapsedMicroseconds);
+    sw.reset();
+    sw.start();
+    vetor1000.sort();
+    sw.stop();
+    timings.add(sw.elapsedMicroseconds);
+    sw.reset();
+    sw.start();
+    vetor10000.sort();
+    sw.stop();
+    timings.add(sw.elapsedMicroseconds);
+    sw.reset();
+    sw.start();
+    vetor100000.sort();
+    sw.stop();
+    timings.add(sw.elapsedMicroseconds);
+    sw.reset();
+    sw.start();
+    vetor1000000.sort();
+    sw.stop();
+    timings.add(sw.elapsedMicroseconds);
 
-    fw.writeToFile('$testPhase\n', 'TestResult.txt');
-    setState(() {});
+    var results = 'Sorting Results:\n';
+    var index = 1;
+
+    for (var time in timings) {
+      results += '${pow(10,index)} Elements: $time microseconds\n';
+      index += 1;
+    }
+    fw.writeToFile('$testPhase\n', 'TestResult.txt').then((value) =>
+        fw
+            .appendToFile(results, 'TestResult.txt')
+            .then((value) =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SquaresTest()),
+            )));
   }
 }
