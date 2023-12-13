@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:performance_test/FileWriter.dart';
 import 'package:performance_test/SquaresTest.dart';
 
@@ -45,72 +47,57 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   List<Widget> _mainTestWidget() {
-      return <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Text('Test stage: $testPhase'),
-              Text('File will be saved at: $savedFileDir')])
-      ];
+    return <Widget>[
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text('Test stage: $testPhase'),
+        Text('File will be saved at: $savedFileDir')
+      ])
+    ];
   }
 
-  _sortingTest(BuildContext context) {
+  _sortingTest(BuildContext context) async {
     FileWriter fw = FileWriter();
-    fw.getFilePath('TestResult.txt').then((value) => {savedFileDir = value});
+    var dir = await getApplicationDocumentsDirectory();
+    Directory('${dir.path}/PerformanceTestApp').createSync(recursive: true);
+    fw.getFilePath('SortingTest', 'txt').then((value) => {
+          setState(() {
+            savedFileDir = value;
+          })
+        });
 
-    var vetor10 = List.generate(10, (_) => Random().nextInt(1000));
-    var vetor100 = List.generate(100, (_) => Random().nextInt(1000));
-    var vetor1000 = List.generate(1000, (_) => Random().nextInt(1000));
-    var vetor10000 = List.generate(10000, (_) => Random().nextInt(1000));
-    var vetor100000 = List.generate(100000, (_) => Random().nextInt(1000));
-    var vetor1000000 = List.generate(1000000, (_) => Random().nextInt(1000));
+    List<int> vetorLengths = [
+      10,
+      100,
+      1000,
+      10000,
+      100000,
+      1000000,
+      10000000,
+      100000000
+    ];
 
     var timings = [];
     Stopwatch sw = Stopwatch();
-    sw.start();
-    vetor10.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
-    sw.reset();
-    sw.start();
-    vetor100.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
-    sw.reset();
-    sw.start();
-    vetor1000.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
-    sw.reset();
-    sw.start();
-    vetor10000.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
-    sw.reset();
-    sw.start();
-    vetor100000.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
-    sw.reset();
-    sw.start();
-    vetor1000000.sort();
-    sw.stop();
-    timings.add(sw.elapsedMicroseconds);
+    for (int i = 0; i < vetorLengths.length; i++) {
+      var vetor = List.generate(vetorLengths[i], (_) => Random().nextInt(1000));
+      sw.reset();
+      sw.start();
+      vetor.sort();
+      sw.stop();
+      timings.add(sw.elapsedMicroseconds);
+    }
 
     var results = 'Sorting Results:\n';
-    var index = 1;
-
+    var index = 0;
     for (var time in timings) {
-      results += '${pow(10,index)} Elements: $time microseconds\n';
+      results += '${vetorLengths[index]} Elements: $time microseconds\n';
       index += 1;
     }
-    fw.writeToFile('$testPhase\n', 'TestResult.txt').then((value) =>
-        fw
-            .appendToFile(results, 'TestResult.txt')
-            .then((value) =>
-            Navigator.push(
+    fw.writeToFile('$testPhase\n', 'SortingTest', 'txt').then((value) => fw
+        .appendToFile(results, 'SortingTest', 'txt')
+        .then((value) => Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const SquaresTest()),
+              MaterialPageRoute(builder: (context) => const SquaresTest()),
             )));
   }
 }

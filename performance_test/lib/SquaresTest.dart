@@ -3,7 +3,8 @@ import 'package:performance_test/FileWriter.dart';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:performance_test/main.dart';
+
+import 'WriteTest.dart';
 
 class SquaresTest extends StatelessWidget {
   const SquaresTest({super.key});
@@ -42,7 +43,7 @@ class _MovingSquaresScreenState extends State<MovingSquaresScreen> {
   @override
   void initState() {
     super.initState();
-    fw.appendToFile("\n\nStarting Squares test...\n", "TestResult.txt");
+    fw.writeToFile("Starting Squares test...\n", "SquareTest", "txt");
     _startMovingSquares(numberOfSquares[index]);
   }
 
@@ -69,7 +70,7 @@ class _MovingSquaresScreenState extends State<MovingSquaresScreen> {
     sw.stop();
     _timer.cancel();
     fw.appendToFile(
-        "${numberOfSquares[index]} Squares -- Average FPS: ${lastFPS.toStringAsFixed(2)}\n", "TestResult.txt");
+        "${numberOfSquares[index]} Squares -- Average FPS: ${lastFPS.toStringAsFixed(2)}\n", "SquareTest", "txt");
     if (index + 1 < numberOfSquares.length) {
       index += 1;
       _startMovingSquares(numberOfSquares[index]);
@@ -77,7 +78,7 @@ class _MovingSquaresScreenState extends State<MovingSquaresScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const MyApp()),
+            builder: (context) => const WriteTest())
       );
     }
   }

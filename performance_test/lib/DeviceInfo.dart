@@ -217,7 +217,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
             TextButton(
                 onPressed: (){
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MyApp()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyHomePage(title: 'Performance Test')));
                   });
                 },
                 style: ButtonStyle(

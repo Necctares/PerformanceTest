@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:performance_test/MLTest.dart';
 import 'package:performance_test/TestScreen.dart';
+import 'package:performance_test/WriteTest.dart';
 
 import 'DeviceInfo.dart';
 
 void main() {
   runApp(const MyApp());
+  //runApp(const MLTest());
 }
 
 class MyApp extends StatelessWidget {
