@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:performance_test/FileWriter.dart';
 import 'package:performance_test/MLTest.dart';
+import 'package:performance_test/main.dart';
 
 class WriteTest extends StatelessWidget {
   const WriteTest({super.key});
@@ -113,7 +114,7 @@ class _WriteTestPageState extends State<WriteTestPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const MLTest())
+            builder: (context) => const MyHomePage())
     );
   }
 

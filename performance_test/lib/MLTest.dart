@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -49,6 +50,7 @@ class _MLTestState extends State<MLTest> {
       _labels = labelsData.split('\n');
     } catch (e) {
       print('Erro ao carregar o modelo: $e');
+      _endTest();
     }
   }
 
@@ -87,6 +89,7 @@ class _MLTestState extends State<MLTest> {
       _endTest();
     } catch (e) {
       print('Erro ao classificar a imagem: $e');
+      _endTest();
     }
   }
 
@@ -94,7 +97,7 @@ class _MLTestState extends State<MLTest> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => MyHomePage(title: "Performance Test"))
+            builder: (context) => MyHomePage())
     );
   }
 
@@ -118,3 +121,4 @@ class _MLTestState extends State<MLTest> {
     );
   }
 }
+*/

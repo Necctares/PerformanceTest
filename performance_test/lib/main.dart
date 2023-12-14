@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:performance_test/MLTest.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:performance_test/TestScreen.dart';
-import 'package:performance_test/WriteTest.dart';
 
 import 'DeviceInfo.dart';
+import 'FileWriter.dart';
 
 void main() {
   runApp(const MyApp());
-  //runApp(const MLTest());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,15 +21,32 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Performance Test'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key, required this.title});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
-  final String title;
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final String title = 'Performance Test';
+  String _dirPath = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPath();
+  }
+
+  void _loadPath() async {
+    _dirPath = (await getApplicationDocumentsDirectory()).path;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +84,10 @@ class MyHomePage extends StatelessWidget {
                     );
                   },
                   child: const Text('Start test'),
-                ))
+                )),
+            Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text('Directory Path: $_dirPath'))
           ],
         ),
       ),
