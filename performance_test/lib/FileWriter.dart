@@ -6,7 +6,12 @@ class FileWriter {
   final DateTime date = DateTime.now();
 
   Future<Directory> getApplicationDirectory() async {
-    final directory = await getApplicationDocumentsDirectory();
+    var directory;
+    if (Platform.isAndroid) {
+      directory = await getDownloadsDirectory();
+    } else {
+      directory = await getApplicationDocumentsDirectory();
+    }
     return directory;
   }
 

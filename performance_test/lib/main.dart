@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _loadPath() async {
-    _dirPath = (await getApplicationDocumentsDirectory()).path;
+    _dirPath = (await FileWriter().getApplicationDirectory()).path;
     setState(() {});
   }
 
