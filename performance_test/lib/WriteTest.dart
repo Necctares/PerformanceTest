@@ -47,7 +47,7 @@ class _WriteTestPageState extends State<WriteTestPage> {
       for (int i = 0; i < fileLengths.length; i++) {
         String text = generateRandomText(fileLengths[i]);
         File file = File(
-            '${(await getApplicationDocumentsDirectory()).path}/PerformanceTestApp/generated_text_${fileLengths[i]}_$millisecondsSE.txt');
+            '${(await fw.getApplicationDirectory()).path}/PerformanceTestApp/generated_text_${fileLengths[i]}_$millisecondsSE.txt');
         sw.reset();
         sw.start();
         await file.writeAsString(text);
@@ -89,7 +89,7 @@ class _WriteTestPageState extends State<WriteTestPage> {
       fw.appendToFile("\nStarting Read Test...\n\n", "WriteTest", "txt");
       for (int i = 0; i < fileLengths.length; i++) {
         File file = File(
-            '${(await getApplicationDocumentsDirectory()).path}/PerformanceTestApp/generated_text_${fileLengths[i]}_$millisecondsSE.txt');
+            '${(await fw.getApplicationDirectory()).path}/PerformanceTestApp/generated_text_${fileLengths[i]}_$millisecondsSE.txt');
         sw.reset();
         sw.start();
         String contents = await file.readAsString();
