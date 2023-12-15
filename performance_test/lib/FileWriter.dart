@@ -8,7 +8,7 @@ class FileWriter {
   Future<Directory> getApplicationDirectory() async {
     var directory;
     if (Platform.isAndroid) {
-      directory = await getDownloadsDirectory();
+      directory = await getExternalStorageDirectory();
     } else {
       directory = await getApplicationDocumentsDirectory();
     }

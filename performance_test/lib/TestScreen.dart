@@ -57,7 +57,7 @@ class _TestScreenState extends State<TestScreen> {
 
   _sortingTest(BuildContext context) async {
     FileWriter fw = FileWriter();
-    var dir = await getApplicationDocumentsDirectory();
+    var dir = await fw.getApplicationDirectory();
     Directory('${dir.path}/PerformanceTestApp').createSync(recursive: true);
     fw.getFilePath('SortingTest', 'txt').then((value) => {
           setState(() {
